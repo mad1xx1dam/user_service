@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,7 @@ import static school.faang.user_service.config.KafkaConstants.PAYMENT_PROMOTION_
 import static school.faang.user_service.config.KafkaConstants.USER_KEY;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -166,4 +168,12 @@ public class UserService {
                 .map(userMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public void banUser(Long userId) {
+        User user = getUserById(userId);
+        user.setIsBanned(true);
+        userRepository.save(user);
+        log.info("User {} has been banned", userId);
+    }
+
 }
