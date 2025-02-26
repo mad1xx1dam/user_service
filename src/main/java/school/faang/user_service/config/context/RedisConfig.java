@@ -46,6 +46,11 @@ public class RedisConfig {
         return mapper;
     }
 
+    @Bean("profile_pic_channel")
+    public ChannelTopic topicProfilePicChannel(UserServiceProperties properties) {
+        return new ChannelTopic(properties.getRedis().getProfilePicChannel());
+    }
+
     @Bean("bought-premium-topic")
     public ChannelTopic topic(UserServiceProperties properties) {
         return new ChannelTopic(properties.getRedis().getBoughtPremiumTopic());

@@ -17,6 +17,7 @@ import java.util.Map;
 @Setter
 public class UserServiceProperties {
 
+    private S3Properties s3;
     private RedisProperties redis;
     private RecommendationRequestProperties recommendationRequest;
     private Map<String, TariffProperties> availableTariffs = new HashMap<>();
@@ -38,8 +39,19 @@ public class UserServiceProperties {
 
     @Getter
     @Setter
+    public static class S3Properties {
+        private String endpoint;
+        private String accessKey;
+        private String secretKey;
+        private String bucketName;
+        private String isMock;
+    }
+
+    @Getter
+    @Setter
     public static class RedisProperties {
         private String boughtPremiumTopic;
+        private String profilePicChannel;
     }
 
     public List<TariffDto> getListAvailableTariffDtos() {
