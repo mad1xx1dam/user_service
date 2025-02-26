@@ -51,7 +51,7 @@ payment-service:
 user-service:
   redis:
     bought-premium-topic: "pubsub:bought-premium"
-    profile_pic_channel: "pubsub:profile-pic"
+    profile_pic_channel: profile_pic_channel
   api-version: /api/v1
   available-tariffs:
     super-user:
