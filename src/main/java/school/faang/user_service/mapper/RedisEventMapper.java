@@ -17,7 +17,7 @@ public interface RedisEventMapper {
     @Mapping(target = "picKey", source = "profilePicUrl")
     ProfilePicRedisEvent toRedisEvent(ProfilePicEvent event);
 
-    @Mapping(target = "type", constant = "PremiumBought")
+    @Mapping(target = "type", constant = "PREMIUM_BOUGHT")
     @Mapping(target = "data", expression = "java(toMap(event))")
     PremiumBoughtRedisEvent toRedisEvent(PremiumBoughtEvent event);
 
