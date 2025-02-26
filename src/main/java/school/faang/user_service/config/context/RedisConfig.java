@@ -25,19 +25,4 @@ public class RedisConfig {
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper));
         return template;
     }
-
-    @Bean("redisObjectMapper")
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
-
-        mapper.setVisibility(mapper.getSerializationConfig()
-                .getDefaultVisibilityChecker()
-                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withSetterVisibility(JsonAutoDetect.Visibility.NONE));
-
-        return mapper;
-    }
 }
