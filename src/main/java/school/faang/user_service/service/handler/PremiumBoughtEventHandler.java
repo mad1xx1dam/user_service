@@ -8,30 +8,22 @@ import org.springframework.stereotype.Service;
 import school.faang.user_service.dto.PremiumBoughtEvent;
 import school.faang.user_service.properties.UserServiceProperties;
 import school.faang.user_service.redis.RedisEventPublisher;
+import school.faang.user_service.mapper.RedisEventMapper;
 import school.faang.user_service.redis.event.PremiumBoughtRedisEvent;
-
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class PremiumBoughtEventHandler {
-    private static final String PREMIUM_BOUGHT = "PREMIUM_BOUGHT";
 
     private final RedisEventPublisher premiumBoughtEventPublisher;
     private final UserServiceProperties properties;
+    private final RedisEventMapper redisEventMapper;
 
     @Async
     @EventListener
     public void handlePremiumAndSendToRedis(PremiumBoughtEvent event) {
-        PremiumBoughtRedisEvent redisEvent = new PremiumBoughtRedisEvent();
-        redisEvent.setType(PREMIUM_BOUGHT);
-        redisEvent.setData(Map.of("userId", event.getPremium().getUser().getId(),
-                "amount", event.getPaymentResponse().amount(),
-                "currency", event.getPaymentResponse().currency().name(),
-                "premiumPeriod", event.getPremiumPeriod().name(),
-                "startDate", event.getPremium().getStartDate().format(DateTimeFormatter.ISO_DATE_TIME)));
+        PremiumBoughtRedisEvent redisEvent = redisEventMapper.toRedisEvent(event);
         premiumBoughtEventPublisher.publish(redisEvent, properties.getRedis().getBoughtPremiumTopic());
         log.info("Premium bought event send to Redis event: {}", redisEvent);
     }
